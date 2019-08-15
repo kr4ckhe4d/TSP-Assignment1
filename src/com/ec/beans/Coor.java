@@ -1,4 +1,4 @@
-package com.ec;
+package com.ec.beans;
 
 public class Coor {
     int x;

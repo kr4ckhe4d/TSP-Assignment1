@@ -1,4 +1,4 @@
-package com.ec;
+package com.ec.beans;
 
 import java.util.ArrayList;
 import java.util.List;

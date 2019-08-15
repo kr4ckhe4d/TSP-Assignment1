@@ -1,5 +1,9 @@
 package com.ec;
 
+import com.ec.beans.City;
+import com.ec.beans.Coor;
+import com.ec.beans.Path;
+
 import java.util.List;
 
 public class LocalSearch {
@@ -18,7 +22,7 @@ public class LocalSearch {
      * @param toCity
      * @return Double type distance
      */
-    public Double cal2CitiesDist(Coor fromCity,Coor toCity){
+    public Double cal2CitiesDist(Coor fromCity, Coor toCity){
         Double distX = Math.pow((fromCity.getX()-toCity.getX()),2);
         Double distY = Math.pow((fromCity.getY()-toCity.getY()),2);
         return Math.sqrt(distX+distY);
@@ -52,6 +56,7 @@ public class LocalSearch {
         else
             return false;
     }
+
     public Path jump(Path path){
         return null;
     }

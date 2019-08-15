@@ -1,4 +1,4 @@
-package com.ec;
+package com.ec.beans;
 
 public class City {
     int id;

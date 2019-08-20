@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import static com.ec.operators.Crossover.orderCrossover;
 import static com.ec.operators.Mutation.insertMutation;
 import static com.ec.operators.TranslateIndividual.translateChildren;
-import static javafx.scene.transform.Transform.translate;
 
 public class Main {
 
@@ -15,7 +14,7 @@ public class Main {
         TSPProblem tsp = new TSPProblem("data/eil51.tsp.txt");
         System.out.println(tsp.getCities());
         //Setting Popuation
-        Population population = new Population(50, true);
+        Population population = new Population(52, true);
         //Setting Tournament
         TournamentSelection ts = new TournamentSelection(5);
 
@@ -63,7 +62,21 @@ public class Main {
             System.out.println();
         }
 
+        /**
+         *
+         * selection 
+         *
+         * */
 
+        population.saveIndividual(population.populationSize() - 1,individuals.get(0));
+        population.saveIndividual(population.populationSize() + 0,individuals.get(1));
+
+        Individual individual = ts.select(population);
+
+        for (int i = 0; i < TSPProblem.getCitySize(); i++) {
+            System.out.print(individual.getCity(i).getId() + " ");
+        }
+        System.out.println();
 
     }
 

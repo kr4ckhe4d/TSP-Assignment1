@@ -40,12 +40,20 @@ public class Individual {
     public static void main(String[] args){
         List<City> cities= Arrays.asList(new City[]{
                 new City("a", 1, 2),
-                new City("a", 1, 2),
-                new City("a", 1, 2),
-                new City("a", 1, 2),
-                new City("a", 1, 2)
+                new City("b", 1, 2),
+                new City("c", 1, 2),
+                new City("d", 1, 2),
+                new City("e", 1, 2)
         });
-        System.out.println(permute(cities));
+
+        List<List<City>> permCities  = permute(cities);
+
+        for(List<City> cityArr: permCities){
+            for(City city: cityArr){
+                System.out.print(" "+ city.name+",");
+            }
+            System.out.println();
+        }
     }
 
     public double calculateDistance(City a, City b){

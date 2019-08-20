@@ -64,19 +64,19 @@ public class Main {
 
         /**
          *
-         * selection 
+         * selection
          *
          * */
 
-        population.saveIndividual(population.populationSize() - 1,individuals.get(0));
-        population.saveIndividual(population.populationSize() + 0,individuals.get(1));
-
-        Individual individual = ts.select(population);
-
-        for (int i = 0; i < TSPProblem.getCitySize(); i++) {
-            System.out.print(individual.getCity(i).getId() + " ");
-        }
-        System.out.println();
+//        population.saveIndividual(population.populationSize() - 1,individuals.get(0));
+//        population.saveIndividual(population.populationSize() + 0,individuals.get(1));
+//
+//        Individual individual = ts.select(population);
+//
+//        for (int i = 0; i < TSPProblem.getCitySize(); i++) {
+//            System.out.print(individual.getCity(i).getId() + " ");
+//        }
+//        System.out.println();
 
     }
 

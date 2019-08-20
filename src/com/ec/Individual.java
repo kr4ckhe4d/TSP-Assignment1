@@ -79,7 +79,7 @@ public class Individual {
         return individual.size();
     }
 
-    //check individual contains city
+    //check individual contains city and returns status
     public boolean containsCity(City city){
         return individual.contains(city);
     }

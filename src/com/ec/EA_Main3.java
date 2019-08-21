@@ -6,27 +6,26 @@ import com.ec.selection.TournamentSelection;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ec.operators.Crossover.orderCrossover;
-import static com.ec.operators.Mutation.insertMutation;
+import static com.ec.operators.Crossover.cycleCrossover;
+import static com.ec.operators.Mutation.inversionMutation;
 import static com.ec.operators.TranslateIndividual.translateChild;
 import static com.ec.operators.TranslateIndividual.translateChildren;
 
 /**
  *  This algorithm utilises
  *  Selection : Tournament selection
- *  Crossover: Order Crossover
- *  Mutation: Insert Mutation
+ *  Crossover: Cycle Crossover
+ *  Mutation: Inverse Mutation
  */
-public class Main {
+public class EA_Main3 {
 
-    private static int POPULATION_SIZE = 20;
+    private static int POPULATION_SIZE = 50;
     private static int GENERATION_SIZE = 2000;
-
 
     public static void main(String args[]) {
         TSPProblem tsp = new TSPProblem("data/eil51.tsp.txt");
         System.out.println(tsp.getCities());
-        //Setting Popuation
+        //Setting and initialising Popuation
         Population population = new Population(POPULATION_SIZE, true);
         System.out.println(population.getFittest());
         System.out.println("Initial Distance: " + population.getFittest().getDistance());
@@ -76,13 +75,13 @@ public class Main {
             arrayLists.add(temp);
 
             List<Individual> children = new ArrayList<>();
-            children = translateChildren(orderCrossover(arrayLists), cities);
-            newPopulation.saveIndividual(i,children.get(2));
+            children = translateChildren(cycleCrossover(arrayLists), cities);
+            newPopulation.saveIndividual(i,children.get(0));
             //System.out.println("Child 1: "+ children.get(2));
             //System.out.println("Child 2: "+ children.get(3));
             if(i < newPopulation.populationSize() - 1) {
                 i++;
-                newPopulation.saveIndividual(i, children.get(3));
+                newPopulation.saveIndividual(i, children.get(1));
             }
         }
 
@@ -91,10 +90,11 @@ public class Main {
             for (int j = 0; j < newPopulation.getIndividual(i).individualSize(); j++) {
                 tempArrayList.add(newPopulation.getIndividual(i).getCity(j).getId());
             }
-            newPopulation.saveIndividual(i,translateChild(insertMutation(tempArrayList), cities));
+            newPopulation.saveIndividual(i,translateChild(inversionMutation(tempArrayList), cities));
         }
 
         return newPopulation;
     }
+
 
 }

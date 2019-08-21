@@ -23,10 +23,10 @@ public class TournamentSelection implements Selection{
         }
 
         //Simple Printing
-        System.out.println("Random Tournament");
-        for(int i=0; i<tournamentSize; i++){
-            System.out.println("Individual"+ i +" -- Fitness = "+ tournament.getIndividual(i).getFitness());
-        }
+//        System.out.println("Random Tournament");
+//        for(int i=0; i<tournamentSize; i++){
+//            System.out.println("Individual"+ i +" -- Fitness = "+ tournament.getIndividual(i).getFitness());
+//        }
         //Get the fittest individual from the tournament and return
         Individual fittest = tournament.getFittest();
         return fittest;

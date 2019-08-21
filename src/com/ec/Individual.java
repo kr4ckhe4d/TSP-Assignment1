@@ -79,9 +79,17 @@ public class Individual {
         return individual.size();
     }
 
-    //check individual contains city and returns status
+    //check individual contains city
     public boolean containsCity(City city){
         return individual.contains(city);
     }
 
+    @Override
+    public String toString() {
+        String geneString = "|";
+        for (int i = 0; i < individualSize(); i++) {
+            geneString += getCity(i)+"|";
+        }
+        return geneString;
+    }
 }

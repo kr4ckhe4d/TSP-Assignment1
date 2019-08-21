@@ -9,12 +9,12 @@ public class FitnessProportional implements Selection {
 
     @Override
     public Individual select(Population population) {
-        int index = 0;
+        int index = -1;
         int totalSum = 0;
         for(int i=0; i<population.populationSize(); i++){
             totalSum += population.getFittest().getFitness();
         }
-        int random = ThreadLocalRandom.current().nextInt(0,totalSum);
+        int random = (int) (Math.random() * totalSum);
         int partialSum = 0;
         for(int i=0; i<population.populationSize(); i++){
             partialSum += population.getFittest().getFitness();
@@ -23,8 +23,11 @@ public class FitnessProportional implements Selection {
                 break;
             }
         }
-        random = ThreadLocalRandom.current().nextInt(0,totalSum);
-        return population.getIndividual(random);
+        random = (int) (Math.random() * totalSum);
+        if(index == -1){
+            return population.getIndividual(random);
+        }
+        return population.getIndividual(index);
     }
 
 }

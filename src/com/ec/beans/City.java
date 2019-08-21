@@ -21,14 +21,14 @@ public class City {
     }
 
     public double distanceTo(City city){
-        int distX = (int)Math.abs(getCoor().getX() - city.getCoor().getX());
-        int distY = (int)Math.abs(getCoor().getY() - city.getCoor().getY());
+        double distX = Math.abs(getCoor().getX() - city.getCoor().getX());
+        double distY = Math.abs(getCoor().getY() - city.getCoor().getY());
         double distance = Math.sqrt((distX*distX)+(distY*distY));
         return distance;
     }
 
     @Override
     public String toString() {
-        return "{" + id + " " + coor.getX() + " " + coor.getY() + '}';
+        return "{" + id + "}";
     }
 }

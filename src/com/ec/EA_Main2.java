@@ -1,32 +1,31 @@
 package com.ec;
 
 import com.ec.beans.City;
-import com.ec.selection.TournamentSelection;
+import com.ec.selection.FitnessProportional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ec.operators.Crossover.orderCrossover;
-import static com.ec.operators.Mutation.insertMutation;
+import static com.ec.operators.Crossover.PMXCrossover;
+import static com.ec.operators.Mutation.swapMutation;
 import static com.ec.operators.TranslateIndividual.translateChild;
 import static com.ec.operators.TranslateIndividual.translateChildren;
 
 /**
  *  This algorithm utilises
- *  Selection : Tournament selection
- *  Crossover: Order Crossover
- *  Mutation: Insert Mutation
+ *  Selection : Fitness-Proportionate(Roulette Wheel)
+ *  Crossover: PMX Crossover
+ *  Mutation: Swap Mutation
  */
-public class Main {
+public class EA_Main2 {
 
     private static int POPULATION_SIZE = 20;
     private static int GENERATION_SIZE = 2000;
 
-
     public static void main(String args[]) {
         TSPProblem tsp = new TSPProblem("data/eil51.tsp.txt");
         System.out.println(tsp.getCities());
-        //Setting Popuation
+        //Setting and initialising Popuation
         Population population = new Population(POPULATION_SIZE, true);
         System.out.println(population.getFittest());
         System.out.println("Initial Distance: " + population.getFittest().getDistance());
@@ -54,10 +53,10 @@ public class Main {
         }
 
         for (int i = elitismIndex; i < newPopulation.populationSize(); i++) {
-            TournamentSelection ts = new TournamentSelection(5);
+            FitnessProportional fp = new FitnessProportional();
 
-            Individual parent1 = ts.select(population);
-            Individual parent2 = ts.select(population);
+            Individual parent1 = fp.select(population);
+            Individual parent2 = fp.select(population);
             //System.out.println("Parent 1: "+parent1);
             //System.out.println("Parent 2: "+parent2);
 
@@ -76,7 +75,7 @@ public class Main {
             arrayLists.add(temp);
 
             List<Individual> children = new ArrayList<>();
-            children = translateChildren(orderCrossover(arrayLists), cities);
+            children = translateChildren(PMXCrossover(arrayLists), cities);
             newPopulation.saveIndividual(i,children.get(2));
             //System.out.println("Child 1: "+ children.get(2));
             //System.out.println("Child 2: "+ children.get(3));
@@ -91,10 +90,11 @@ public class Main {
             for (int j = 0; j < newPopulation.getIndividual(i).individualSize(); j++) {
                 tempArrayList.add(newPopulation.getIndividual(i).getCity(j).getId());
             }
-            newPopulation.saveIndividual(i,translateChild(insertMutation(tempArrayList), cities));
+            newPopulation.saveIndividual(i,translateChild(swapMutation(tempArrayList), cities));
         }
 
         return newPopulation;
     }
+
 
 }

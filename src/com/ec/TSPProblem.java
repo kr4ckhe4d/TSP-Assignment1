@@ -24,14 +24,18 @@ public class TSPProblem {
 
             //Read
             String line = br.readLine();
-            while(!line.equals("EOF")){
+            while(!line.startsWith("1"))
+                line=br.readLine();
+            while(!line.startsWith("EOF")&&!line.equals("")){
                 City city = new City();
                 Coor coor = new Coor();
                 String[] lineValue = line.split(" ");
-
-                coor.setX(Integer.parseInt(lineValue[1]));
-                coor.setY(Integer.parseInt(lineValue[2]));
-
+                try {
+                    coor.setX(Double.parseDouble(lineValue[1]));
+                    coor.setY(Double.parseDouble(lineValue[2]));
+                }catch (Exception e){
+                    System.out.println("*******"+line);
+                }
                 city.setId(Integer.parseInt(lineValue[0]));
                 city.setCoor(coor);
 

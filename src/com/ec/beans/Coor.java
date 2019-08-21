@@ -1,8 +1,8 @@
 package com.ec.beans;
 
 public class Coor {
-    Double x;
-    Double y;
+    private Double x;
+    private Double y;
 
     public Double getX() {
         return x;

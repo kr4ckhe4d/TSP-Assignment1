@@ -14,13 +14,7 @@ import java.util.*;
  */
 public class LocalSearch {
     private static Random random = new Random(System.currentTimeMillis());
-    public List twoOpt(List<City> cityList){
-        for (City tem: cityList
-        ) {
 
-        }
-        return null;
-    }
 
     /**
      * calculate the distance of 2 cities
@@ -50,84 +44,48 @@ public class LocalSearch {
             return false;
     }
 
-    public Solution jump(Solution path){
+    public Solution jump(Solution path,int firstIndex, int secondIndex){
         Solution solution = new Solution (path);
         int n = solution.getSize();
-        int ran1,ran2;
-        ran1 = random.nextInt(n);
-        do {
-            ran2  = random.nextInt(n);
-        } while (ran1 == ran2);
-        if(ran1>ran2){
-            int tem =ran1;
-            ran1= ran2;
-            ran2= tem;
-        }
-        int element1 = solution.getCityPath().remove(ran1);
-        solution.getCityPath().add(ran2,element1);
+
+        int element1 = solution.getCityPath().remove(firstIndex);
+        solution.getCityPath().add(secondIndex,element1);
 //        int element2 = solution.getCityPath().remove(ran2);
 //        solution.getCityPath().add(ran1, element2);
         solution.updateDist();
         return solution;
     }
 
-    public Solution exchange(Solution path){
+    public Solution exchange(Solution path,int firstIndex, int secondIndex){
         Solution solution = new Solution (path);
         int n = solution.getSize();
-        int ran1,ran2;
-        ran1 = random.nextInt(n);
-        do {
-            ran2  = random.nextInt(n);
-        } while (ran1 == ran2);
-        if(ran1>ran2){
-            int tem =ran1;
-            ran1= ran2;
-            ran2= tem;
-        }
-        int element1 = solution.getCityPath().remove(ran1);
-        solution.getCityPath().add(ran2,element1);
-        int element2 = solution.getCityPath().remove(ran2-1);
-        solution.getCityPath().add(ran1, element2);
+        int element1 = solution.getCityPath().remove(firstIndex);
+        solution.getCityPath().add(secondIndex,element1);
+        int element2 = solution.getCityPath().remove(secondIndex-1);
+        solution.getCityPath().add(firstIndex, element2);
         solution.updateDist();
         return solution;
     }
 
 
-    public Solution opt_2(Solution solution){
-//        Solution sol = new Solution (solution);
+    public Solution opt_2(Solution solution,int firstIndex, int secondIndex){
         int n = solution.getSize();
-        int ran1,ran2;
-        ran1 = random.nextInt(n);
-        do {
-            ran2  = random.nextInt(n);
-        } while (ran1 == ran2);
-        if(ran1>ran2){
-            int tem =ran1;
-            ran1= ran2;
-            ran2= tem;
-        }
-//                System.out.println("n = "+n+"  ran = "+ran+"  ran2 = "+ran2);
-        ArrayList<Integer> citypath = solution.getCityPath();
-        double cityX[] = solution.cityX;  //coordinate x of i city
-        double cityY[] = solution.cityY; //coordinate y of i city
+        Solution result = new Solution(solution);
+        ArrayList<Integer> citypath = result.getCityPath();
+        double cityX[] = result.cityX;  //coordinate x of i city
+        double cityY[] = result.cityY; //coordinate y of i city
 
-        int i=ran1, j = ran2;
+        int i=firstIndex, j = secondIndex;
         int tem=0;
         double tx,ty;
-        while(i<ran2&&i<j){
+        while(i<secondIndex&&i<j){
             tem = citypath.get(i);
             citypath.set(i,citypath.get(j));
             citypath.set(j,tem);
-            tx=cityX[i];
-            cityX[i]=cityX[j];
-            cityX[j]=tx;
-            ty=cityY[i];
-            cityY[i]=cityY[j];
-            cityY[j]=ty;
             i++;
             j--;
         }
-        Solution result = new Solution(citypath, cityX,cityY,citypath.size());
+//        Solution result = new Solution(citypath, cityX,cityY,citypath.size());
         result.updateDist();
         return result;
 
@@ -151,108 +109,111 @@ public class LocalSearch {
         return files;
     }
 
-    public void run(){
-        List<String> fileNames = getFiles("/Users/jonny/IdeaProjects/TSP-Assignment1/src/resources");
-        ArrayList<ArrayList> prints = new ArrayList<ArrayList>();
-        for (String fn: fileNames
-        ) {
-            TSPProblem tsp = new TSPProblem(fn);
-            List<City> cities = tsp.getCities();
-            if(cities==null||cities.size()<1){
-                System.out.println("cities can not be null");
-                return ;
-            }
-            System.out.println(fn.substring(56,fn.length()));
 
-            System.out.println();
-            System.out.println("Jump");
-            Solution preSolution =new Solution(tsp.getCities());
-            Solution bestSolution = preSolution;
 
-            Double jumpTotalcost = new Double(0);
-            for (int i = 0; i < 30; i++) {
-                Solution postSolution = jump(bestSolution);
-                jumpTotalcost+=postSolution.getPathDist();
-                System.out.println(postSolution.getPathDist());
-                if(bestSolution.getPathDist()>postSolution.getPathDist()){
-                    bestSolution = postSolution;
+    public Solution run(Solution initSolution,String operation) {
+            Solution bestSolution = new Solution(initSolution);
+            double minDistance = bestSolution.getPathDist();
+            double Opt2Totalcost=0;
+            int enhancement = 0;
+//            while (enhancement < 20) {
+                for (int i = 0; i < bestSolution.getSize() - 1; i++) {
+                    for (int k = i + 1; k < bestSolution.getSize(); k++) {
+                        Solution postSolution;
+                        if(operation.equals("jump")){
+                            postSolution = jump(bestSolution,i,k);
+                        }else if(operation.equals("exchange")){
+                            postSolution = exchange(bestSolution,i,k);
+                        }else{
+                            postSolution = opt_2(bestSolution,i,k);
+                        }
+//                        Solution postSolution = opt_2(bestSolution,i,k);
+                        //Opt2Totalcost+=postSolution.getPathDist();
+                        double newDistance = postSolution.getPathDist();
+                        if (newDistance < minDistance) {
+//                            enhancement = 0;
+                            minDistance = newDistance;
+                            bestSolution = postSolution;
+                        }
+                    }
                 }
-            }
-            ArrayList printLineJ = new ArrayList();
-            printLineJ.add(fn.substring(56,fn.length()));
-            printLineJ.add("Jump");
-            printLineJ.add(jumpTotalcost/30+"");
-            printLineJ.add(bestSolution.getPathDist()+"");
-            prints.add(printLineJ);
-            System.out.println("Average Cost \t\t Minimum Cost");
-            System.out.println(jumpTotalcost/30+" \t "+bestSolution.getPathDist());
-//            System.out.println("Average Cost = "+jumpTotalcost/30);
-//            System.out.println("Minimum Cost = "+bestSolution.getPathDist());
-            System.out.println();
-
-
-            System.out.println("exchange");
-            bestSolution = preSolution;
-            Double exchangeTotalcost = new Double(0);
-            for (int i = 0; i < 30; i++) {
-                Solution postSolution = exchange(bestSolution);
-                exchangeTotalcost+=postSolution.getPathDist();
-                System.out.println(postSolution.getPathDist());
-                if(bestSolution.getPathDist()>postSolution.getPathDist()){
-                    bestSolution = postSolution;
-                }
-            }
-            ArrayList printLineE = new ArrayList();
-            printLineE.add("");
-            printLineE.add("Exchange");
-            printLineE.add(exchangeTotalcost/30+"");
-            printLineE.add(bestSolution.getPathDist()+"");
-            prints.add(printLineE);
-            System.out.println("Average Cost \t\t Minimum Cost");
-            System.out.println(exchangeTotalcost/30+" \t "+bestSolution.getPathDist());
-//            System.out.println("Average Cost = "+exchangeTotalcost/30);
-//            System.out.println("Minimum Cost = "+bestSolution.getPathDist());
-
-            System.out.println();
-            System.out.println("2-Opt");
-            bestSolution = preSolution;
-            Double Opt2Totalcost = new Double(0);
-            for (int i = 0; i < 30; i++) {
-                Solution postSolution = opt_2(bestSolution);
-                Opt2Totalcost+=postSolution.getPathDist();
-                System.out.println(postSolution.getPathDist());
-                if(bestSolution.getPathDist()>postSolution.getPathDist()){
-                    bestSolution = postSolution;
-                }
-            }
-            ArrayList printLineO = new ArrayList();
-            printLineO.add("");
-            printLineO.add("2-Opt");
-            printLineO.add(Opt2Totalcost/30+"");
-            printLineO.add(bestSolution.getPathDist()+"");
-            prints.add(printLineO);
-            System.out.println("Average Cost \t\t Minimum Cost");
-            System.out.println(Opt2Totalcost/30+" \t "+bestSolution.getPathDist());
-//            System.out.println("Average Cost = "+Opt2Totalcost/30);
-//            System.out.println("Minimum Cost = "+bestSolution.getPathDist());
-        }
-        System.out.println();
-        for (ArrayList<String> list: prints
-        ) {
-            for (String str: list
-            ) {
-                System.out.print(str+"\t");
-            }
-            System.out.println();
-
-        }
+//                enhancement++;
+//            }
+        return bestSolution;
     }
 
 
+
+
     public static void main(String[] args) {
-        // write your code here
         LocalSearch ls = new LocalSearch();
-        ls.run();
+
+        List<String> fileNames = getFiles("/Users/jonny/IdeaProjects/TSP-Assignment1/src/resources");
+        ArrayList<ArrayList> Log = new ArrayList<ArrayList>();
+        ArrayList files = new ArrayList();
+        Double Opt2Totalcost = new Double(0);
+        Double Opt2Mincost = new Double(0);
+        for (String fn: fileNames) {
+            TSPProblem tsp = new TSPProblem(fn);
+            List<City> cities = tsp.getCities();
+            System.out.println(fn.substring(56,fn.length()));
+            Solution bestSolution = new Solution(tsp.getCities());
+            if (cities == null || cities.size() < 1) {
+                System.out.println("cities can not be null");
+                return;
+            }
+            Opt2Totalcost=0.0;
+            for (int i = 0; i < 30; i++) {
+                bestSolution.initialize();
+                Solution result = ls.run(bestSolution,"jump");
+                Opt2Totalcost+=result.getPathDist();
+                if(i==0)
+                    Opt2Mincost=result.getPathDist();
+                if(Opt2Mincost>result.getPathDist()){
+//                    bestSolution = result;
+                    Opt2Mincost=result.getPathDist();
+                }
+//                System.out.println(result.getPathDist());
+            }
+            System.out.println("Jump:Mean Cost \t\t Minimum Cost");
+            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
+
+            Opt2Totalcost=0.0;
+            for (int i = 0; i < 30; i++) {
+                bestSolution.initialize();
+                Solution result = ls.run(bestSolution,"exchange");
+                Opt2Totalcost+=result.getPathDist();
+                if(i==0)
+                    Opt2Mincost=result.getPathDist();
+                if(Opt2Mincost>result.getPathDist()){
+//                    bestSolution = result;
+                    Opt2Mincost=result.getPathDist();
+                }
+//                System.out.println(result.getPathDist());
+            }
+            System.out.println("Exchange:Mean Cost \t Minimum Cost");
+            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
+
+            Opt2Totalcost=0.0;
+            for (int i = 0; i < 30; i++) {
+                bestSolution.initialize();
+                Solution result = ls.run(bestSolution,"2opt");
+                Opt2Totalcost+=result.getPathDist();
+                if(i==0)
+                    Opt2Mincost=result.getPathDist();
+                if(Opt2Mincost>result.getPathDist()){
+//                    bestSolution = result;
+                    Opt2Mincost=result.getPathDist();
+                }
+//                System.out.println(result.getPathDist());
+            }
+            System.out.println("2opt:Mean Cost \t\t Minimum Cost");
+            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
+
+
+        }
+
+
 //        String inputFileName = "/burma14.tsp";
 //        InputStream inputStream = ls1.getClass().getResourceAsStream(inputFileName);
 //        Scanner in = new Scanner(inputStream);
@@ -266,26 +227,30 @@ public class LocalSearch {
 //
 //        }
 //        Solution solution =new Solution(tsp.getCities());
-//        ArrayList<Integer> path = new ArrayList();
-//        path.add(5);
-//        path.add(1);
-//        path.add(3);
-//        path.add(2);
-//        path.add(4);
-//        path.add(6);
-//
-//        double[] x = {1,2,3,4,5,6};
-//        double[] y = {1,2,3,4,5,6};
-//        Solution solution =new Solution(path,x,y,path.size());
-//        solution.updateDist();
-//
-//        Solution result = ls.exchange(solution);
-//        for (Integer tem: result.getCityPath()
-//             ) {
-//            System.out.println(tem);
-//        }
-//        System.out.println(result.getCityPath().toArray());
+        /*ArrayList<Integer> path = new ArrayList();
+        path.add(5);
+        path.add(1);
+        path.add(3);
+        path.add(2);
+        path.add(4);
+        path.add(6);
 
+        double[] x = {1,2,3,4,5,6};
+        double[] y = {1,2,3,4,5,6};
+        Solution solution =new Solution(path,x,y,path.size());
+        solution.updateDist();
+        for (Integer tem: solution.getCityPath()
+             ) {
+            System.out.print(tem+"\t");
+        }
+        System.out.println();
+        Solution result = ls.exchange(solution,1,5);
+        for (Integer tem: result.getCityPath()
+             ) {
+            System.out.print(tem+"\t");
+        }*/
+//        System.out.println(result.getCityPath().toArray());
+//
 //        int ran1,ran2;
 //        for (int i = 0; i < 10; i++) {
 //            ran1 = random.nextInt(3);

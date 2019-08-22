@@ -14,6 +14,10 @@ public class Solution {
     //    private List<Double> cityDist;
     private double pathDist;
 
+    public Solution(){
+        cityPath = new ArrayList<Integer>();
+    }
+
     /**
      * Initialize a path with another path
      * @param path
@@ -46,7 +50,7 @@ public class Solution {
         }
         size = cityPath.size();
         this.pathDist = updateDist();
-        initialize();
+//        initialize();
     }
 
     public Solution(ArrayList<Integer> cityPath, double[] cityX, double[] cityY, int size) {

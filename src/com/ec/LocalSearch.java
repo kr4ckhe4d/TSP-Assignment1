@@ -10,11 +10,11 @@ import java.util.*;
 
 /**
  * Author Li He
- *
+ * Local search
  */
 public class LocalSearch {
     private static Random random = new Random(System.currentTimeMillis());
-
+    public static LinkedHashMap<String,LinkedHashMap<String,String>> dataLog = new LinkedHashMap<String,LinkedHashMap<String,String>>();
 
     /**
      * calculate the distance of 2 cities
@@ -110,13 +110,18 @@ public class LocalSearch {
     }
 
 
-
+    /**
+     * RUN the Local search algorithm
+     * @param initSolution init solution
+     * @param operation  operation type："jump" , "exchange", "2opt"
+     * @return
+     */
     public Solution run(Solution initSolution,String operation) {
             Solution bestSolution = new Solution(initSolution);
             double minDistance = bestSolution.getPathDist();
             double Opt2Totalcost=0;
             int enhancement = 0;
-//            while (enhancement < 20) {
+//            while (enhancement < 10) {
                 for (int i = 0; i < bestSolution.getSize() - 1; i++) {
                     for (int k = i + 1; k < bestSolution.getSize(); k++) {
                         Solution postSolution;
@@ -148,7 +153,8 @@ public class LocalSearch {
     public static void main(String[] args) {
         LocalSearch ls = new LocalSearch();
 
-        List<String> fileNames = getFiles("/Users/jonny/IdeaProjects/TSP-Assignment1/src/resources");
+        List<String> fileNames = getFiles(args[0]);
+//        List<String> fileNames = getFiles("/Users/jonny/IdeaProjects/TSP-Assignment1/src/resources");
         ArrayList<ArrayList> Log = new ArrayList<ArrayList>();
         ArrayList files = new ArrayList();
         Double Opt2Totalcost = new Double(0);
@@ -156,29 +162,82 @@ public class LocalSearch {
         for (String fn: fileNames) {
             TSPProblem tsp = new TSPProblem(fn);
             List<City> cities = tsp.getCities();
-            System.out.println(fn.substring(56,fn.length()));
+//            System.out.println(fn.substring(56,fn.length()));
             Solution bestSolution = new Solution(tsp.getCities());
             if (cities == null || cities.size() < 1) {
                 System.out.println("cities can not be null");
                 return;
             }
-            Opt2Totalcost=0.0;
-            for (int i = 0; i < 30; i++) {
-                bestSolution.initialize();
-                Solution result = ls.run(bestSolution,"jump");
-                Opt2Totalcost+=result.getPathDist();
-                if(i==0)
-                    Opt2Mincost=result.getPathDist();
-                if(Opt2Mincost>result.getPathDist()){
-//                    bestSolution = result;
-                    Opt2Mincost=result.getPathDist();
-                }
-//                System.out.println(result.getPathDist());
-            }
-            System.out.println("Jump:Mean Cost \t\t Minimum Cost");
-            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
 
-            Opt2Totalcost=0.0;
+            for (int j = 0; j < 3; j++) {
+                String operator = "jump";
+                if(j==0){
+                    operator="jump";
+                }else if(j==1){
+                    operator="exchange";
+                }else
+                    operator="2opt";
+                Opt2Totalcost=0.0;
+                Opt2Mincost=0.0;
+                if(bestSolution.getSize()<500) {
+                    for (int i = 0; i < 30; i++) {
+                        bestSolution.initialize();
+
+                            Solution result = ls.run(bestSolution, operator);
+                            Opt2Totalcost += result.getPathDist();
+                            if (i == 0)
+                                Opt2Mincost = result.getPathDist();
+                            if (result.getPathDist() < Opt2Mincost) {
+    //                    bestSolution = result;
+                                Opt2Mincost = result.getPathDist();
+                            }
+
+    //                System.out.println(result.getPathDist());
+                    }
+                    LinkedHashMap<String,String> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
+                    if (subLog==null||subLog.size()<1)
+                        subLog = new LinkedHashMap<String,String>();
+                    subLog.put(operator+":Mean Cost",Opt2Totalcost/30+"");
+                    subLog.put(operator+":Min Cost",Opt2Mincost+"");
+                    dataLog.put(fn.substring(fn.lastIndexOf("/")+1,fn.length()),subLog);
+                }else{
+                    ThreadLocalSearch threadLS1 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
+                    ThreadLocalSearch threadLS2 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
+                    ThreadLocalSearch threadLS3 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
+                    ThreadLocalSearch threadLS4 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
+                    ThreadLocalSearch threadLS5 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
+                    threadLS1.start();
+                    threadLS2.start();
+                    threadLS3.start();
+                    threadLS4.start();
+                    threadLS5.start();
+                    try {
+                        threadLS1.join();
+                        threadLS2.join();
+                        threadLS3.join();
+                        threadLS4.join();
+                        threadLS5.join();
+                    } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                System.out.println("Main thread is finished");
+                LinkedHashMap<String,String> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
+                if (subLog==null||subLog.size()<1)
+                    subLog = new LinkedHashMap<String,String>();
+                subLog.put(operator+":Mean Cost",ThreadLocalSearch.totalCost/30+"");
+                subLog.put(operator+":Min Cost",ThreadLocalSearch.minCost+"");
+                LocalSearch.dataLog.put(fn.substring(fn.lastIndexOf("/")+1,fn.length()),subLog);
+            }
+
+            }
+
+
+//            System.out.println("Jump:Mean Cost \t\t Minimum Cost");
+//            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
+
+            /*Opt2Totalcost=0.0;
+            Opt2Mincost=0.0;
             for (int i = 0; i < 30; i++) {
                 bestSolution.initialize();
                 Solution result = ls.run(bestSolution,"exchange");
@@ -195,6 +254,7 @@ public class LocalSearch {
             System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
 
             Opt2Totalcost=0.0;
+            Opt2Mincost=0.0;
             for (int i = 0; i < 30; i++) {
                 bestSolution.initialize();
                 Solution result = ls.run(bestSolution,"2opt");
@@ -208,11 +268,19 @@ public class LocalSearch {
 //                System.out.println(result.getPathDist());
             }
             System.out.println("2opt:Mean Cost \t\t Minimum Cost");
-            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);
+            System.out.println(Opt2Totalcost/30+" \t "+Opt2Mincost);*/
 
 
         }
-
+        for (Map.Entry<String, LinkedHashMap<String, String>> entry : dataLog.entrySet()) {
+            String fname = entry.getKey();
+            System.out.println(fname);
+            LinkedHashMap<String,String> dlog = entry.getValue();
+            for (String key : dlog.keySet()) {
+                System.out.print(key+"\t"+dlog.get(key)+"\t");
+            }
+            System.out.println();
+        }
 
 //        String inputFileName = "/burma14.tsp";
 //        InputStream inputStream = ls1.getClass().getResourceAsStream(inputFileName);

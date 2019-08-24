@@ -31,9 +31,11 @@ public class ThreadLocalSearch extends Thread {
     @Override
     public void run() {
         System.out.println(this.getId());
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             param.initialize();
+            Long sTime = System.currentTimeMillis();
             Solution result =ls.run(param,operator);
+            Long eTime = System.currentTimeMillis();
             setTotalCost(totalCost+result.getPathDist());
             if (minCost == 0)
                 setMinCost(result.getPathDist());
@@ -42,6 +44,7 @@ public class ThreadLocalSearch extends Thread {
                 setMinCost(result.getPathDist());
                 minCost = result.getPathDist();
             }
+            System.out.println("\t\t"+result.getPathDist()+"\t"+(eTime-sTime));
         }
 
     }

@@ -159,10 +159,11 @@ public class LocalSearch {
         ArrayList files = new ArrayList();
         Double Opt2Totalcost = new Double(0);
         Double Opt2Mincost = new Double(0);
+        Long sumTime = new Long(0);
         for (String fn: fileNames) {
             TSPProblem tsp = new TSPProblem(fn);
             List<City> cities = tsp.getCities();
-//            System.out.println(fn.substring(56,fn.length()));
+            System.out.println(fn.substring(fn.lastIndexOf("/")+1,fn.length()));
             Solution bestSolution = new Solution(tsp.getCities());
             if (cities == null || cities.size() < 1) {
                 System.out.println("cities can not be null");
@@ -179,12 +180,16 @@ public class LocalSearch {
                     operator="2opt";
                 Opt2Totalcost=0.0;
                 Opt2Mincost=0.0;
+                sumTime=0L;
+                System.out.println(operator);
                 if(bestSolution.getSize()<500) {
                     for (int i = 0; i < 30; i++) {
                         bestSolution.initialize();
-
+                            Long sTime = System.currentTimeMillis();
                             Solution result = ls.run(bestSolution, operator);
+                            Long eTime = System.currentTimeMillis();
                             Opt2Totalcost += result.getPathDist();
+                        sumTime+=(eTime-sTime);
                             if (i == 0)
                                 Opt2Mincost = result.getPathDist();
                             if (result.getPathDist() < Opt2Mincost) {
@@ -192,12 +197,13 @@ public class LocalSearch {
                                 Opt2Mincost = result.getPathDist();
                             }
 
-    //                System.out.println(result.getPathDist());
+                    System.out.println("\t"+result.getPathDist()+"\t"+(eTime-sTime));
                     }
                     LinkedHashMap<String,String> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
                     if (subLog==null||subLog.size()<1)
                         subLog = new LinkedHashMap<String,String>();
                     subLog.put(operator+":Mean Cost",Opt2Totalcost/30+"");
+                    subLog.put(operator+":Mean Time",sumTime/30+"");
                     subLog.put(operator+":Min Cost",Opt2Mincost+"");
                     dataLog.put(fn.substring(fn.lastIndexOf("/")+1,fn.length()),subLog);
                 }else{
@@ -206,22 +212,25 @@ public class LocalSearch {
                     ThreadLocalSearch threadLS3 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
                     ThreadLocalSearch threadLS4 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
                     ThreadLocalSearch threadLS5 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
+                    ThreadLocalSearch threadLS6 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
                     threadLS1.start();
                     threadLS2.start();
                     threadLS3.start();
                     threadLS4.start();
                     threadLS5.start();
+                    threadLS6.start();
                     try {
                         threadLS1.join();
                         threadLS2.join();
                         threadLS3.join();
                         threadLS4.join();
                         threadLS5.join();
+                        threadLS6.join();
                     } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-                System.out.println("Main thread is finished");
+//                System.out.println("Main thread is finished");
                 LinkedHashMap<String,String> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
                 if (subLog==null||subLog.size()<1)
                     subLog = new LinkedHashMap<String,String>();

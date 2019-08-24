@@ -3,10 +3,14 @@ package com.ec.selection;
 import com.ec.Individual;
 import com.ec.Population;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class FitnessProportional implements Selection {
 
+    /**
+     * Fitness Proportional algorithm based on roulette wheel
+     * Returns the best individual based on their fitness value.
+     * @param population
+     * @return individual
+     */
     @Override
     public Individual select(Population population) {
         int index = -1;

@@ -7,10 +7,20 @@ public class TournamentSelection implements Selection{
 
     private int tournamentSize;
 
+    /**
+     * Constructor sets the size of tournament
+     * @param tournamentSize
+     */
     public TournamentSelection(int tournamentSize){
         this.tournamentSize = tournamentSize;
     }
 
+    /**
+     * Random Individual is added to the tournament population and
+     * returns the fittest individual
+     * @param population
+     * @return individual
+     */
     @Override
     public Individual select(Population population) {
         // Setting new tournament population
@@ -22,11 +32,6 @@ public class TournamentSelection implements Selection{
             tournament.saveIndividual(i, population.getIndividual(randomId));
         }
 
-        //Simple Printing
-//        System.out.println("Random Tournament");
-//        for(int i=0; i<tournamentSize; i++){
-//            System.out.println("Individual"+ i +" -- Fitness = "+ tournament.getIndividual(i).getFitness());
-//        }
         //Get the fittest individual from the tournament and return
         Individual fittest = tournament.getFittest();
         return fittest;

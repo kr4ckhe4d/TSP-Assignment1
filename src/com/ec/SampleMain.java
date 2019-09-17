@@ -3,6 +3,7 @@ package com.ec;
 import com.ec.beans.DataInstance;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SampleMain {
 
@@ -26,9 +27,10 @@ public class SampleMain {
 ////        io.algorithm();
 //        System.out.println("IO Works");
         DataInstance ind = new DataInstance();
-        ArrayList<String> cities = ind.randXYPoint(10,0,50);
-        for(String s: cities){
-            System.out.println(s);
+//        ArrayList<String> cities = ind.randXYPoint(10,0,50);
+        int[] numbers= { 100, 500, 1000, 2000};
+        for(int n: numbers){
+            ind.randXYPoint(n,0,50);
         }
     }
 

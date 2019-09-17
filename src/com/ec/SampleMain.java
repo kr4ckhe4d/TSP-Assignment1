@@ -26,12 +26,12 @@ public class SampleMain {
 ////        InverOver io = new InverOver();
 ////        io.algorithm();
 //        System.out.println("IO Works");
-        DataInstance ind = new DataInstance();
-//        ArrayList<String> cities = ind.randXYPoint(10,0,50);
-        int[] numbers= { 100, 500, 1000, 2000};
-        for(int n: numbers){
-            ind.generateCities(n,0,50);
-        }
+//        DataInstance ind = new DataInstance();
+////        ArrayList<String> cities = ind.randXYPoint(10,0,50);
+//        int[] numbers= { 100, 500, 1000, 2000};
+//        for(int n: numbers){
+//            ind.generateCities(n,0,50);
+//        }
     }
 
 }

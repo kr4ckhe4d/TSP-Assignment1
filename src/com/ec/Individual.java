@@ -43,6 +43,28 @@ public class Individual {
         distance = 0;
     }
 
+    public int getCityIndex(int cityId) {
+        for (int i = 0; i < individual.size(); i++) {
+            if (cityId == individual.get(i).getId()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    //Get Next City in the individual
+    public City getNextCity(int position){
+        int index = getCityIndex(position);
+        if(index != -1) {
+            if ((index + 1) >= individualSize()) {
+                return individual.get(0);
+            } else {
+                return individual.get(index+1);
+            }
+        }
+        return null;
+    }
+
     //Gets individual fitness
     public double getFitness(){
         if(fitness == 0){

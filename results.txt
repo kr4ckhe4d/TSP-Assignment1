@@ -962,3 +962,9 @@ jump:Mean	Cost	2759014.928	jump:Min	Cost	2558127.515	exchange:Mean	Cost	6128271.
 exchange:Min	Cost	2558127.515	2opt:Mean	Cost	6818353.413	2opt:Min	Cost	673345.1489																		
 resources\st70.tsp.txt																										
 jump:Mean	Cost	1651.284865	jump:Mean	Time	1	jump:Min	Cost	1313.093925	exchange:Mean	Cost	1569.092921	exchange:Mean	Time	1	exchange:Min	Cost	1358.397066	2opt:Mean	Cost	952.7929288	2opt:Mean	Time	2	2opt:Min	Cost	828.4403155
+
+-------------------InverOver Algorithm:---------------
+EIL51 - 428
+EIL76 - 578
+EIL101 - 642
+ST70 - 691

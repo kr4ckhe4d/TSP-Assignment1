@@ -18,8 +18,8 @@ public class SampleMain {
         ea.run(tsp.getCities());
         System.out.println("EA Worked");
 
-        InverOver io = new InverOver();
-        io.algorithm();
+//        InverOver io = new InverOver();
+//        io.algorithm();
         System.out.println("IO Works");
     }
 

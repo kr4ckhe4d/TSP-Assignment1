@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DataInstance {
-    public ArrayList randXYPoint(int numberOfCities, int min, int max) throws IOException {
-        String fileName = "src/com/ec/generated/"+"fileName" + numberOfCities+".tsp.txt";
+    public ArrayList generateCities(int numberOfCities, int min, int max) throws IOException {
+        String fileName = "data/"+"city" + numberOfCities+".tsp.txt";
         BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
         ArrayList<String> cities = new ArrayList<String>();
         for (int i = 1; i <= numberOfCities; i++) {

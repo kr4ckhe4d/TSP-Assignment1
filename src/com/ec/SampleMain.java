@@ -30,7 +30,7 @@ public class SampleMain {
 //        ArrayList<String> cities = ind.randXYPoint(10,0,50);
         int[] numbers= { 100, 500, 1000, 2000};
         for(int n: numbers){
-            ind.randXYPoint(n,0,50);
+            ind.generateCities(n,0,50);
         }
     }
 

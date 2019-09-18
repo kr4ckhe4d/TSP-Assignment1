@@ -3,8 +3,8 @@ package com.ec.beans;
 import java.util.ArrayList;
 
 public class DataInstance {
-    double[][] euclideanDistances;
-    int noOfCities;
+    private double[][] euclideanDistances;
+    private int noOfCities;
 
 
     DataInstance(int numberOfCities) {
@@ -64,5 +64,9 @@ public class DataInstance {
         distance += Math.pow(source.getCoor().getY() - dest.getCoor().getY(), 2.0);
 
         return Math.sqrt(distance);
+    }
+
+    public double[][] getEuclideanDistances() {
+        return euclideanDistances;
     }
 }

@@ -18,11 +18,52 @@ public class MutationNCrossover {
      * There are two crossover operators
      */
     //Order Based Crossover
-    public static ArrayList<ArrayList<Integer>> orderBasedCrossover(ArrayList<Integer> fatherList, ArrayList<Integer> motherList) {
-        ArrayList<ArrayList<Integer>> childrenList = new ArrayList<ArrayList<Integer>>();
+    public static ArrayList orderBasedLevel(Individual individual1, Individual individual2){
+        ArrayList<Double> xfatherList = new ArrayList<>();
+        ArrayList<Double> xmotherList = new ArrayList<>();
+        
+        ArrayList<Double> yfatherList = new ArrayList<>();
+        ArrayList<Double> ymotherList = new ArrayList<>();
 
-        ArrayList<Integer> child1 = generateChild(fatherList, motherList);
-        ArrayList<Integer> child2 = generateChild(motherList, fatherList);
+        for (int i = 0; i < individual1.individualSize(); i++) {
+            xfatherList.add(individual1.getCity(i).getCoor().getX());
+            yfatherList.add(individual1.getCity(i).getCoor().getY());
+            xmotherList.add(individual2.getCity(i).getCoor().getX());
+            ymotherList.add(individual2.getCity(i).getCoor().getY());
+        }
+        
+        ArrayList<ArrayList<Double>> firstIndividual;
+        ArrayList<ArrayList<Double>> secondIndividual;
+        
+        firstIndividual = orderBasedCrossover(xfatherList,xmotherList);
+        secondIndividual = orderBasedCrossover(yfatherList,ymotherList);
+
+        for (int i = 0; i < individual1.individualSize(); i++) {
+            Coor coor = new Coor();
+            coor.setX(firstIndividual.get(0).get(i));
+            coor.setY(secondIndividual.get(0).get(i));
+            individual1.getCity(i).setCoor(coor);
+        }
+
+        for (int i = 0; i < individual2.individualSize(); i++) {
+            Coor coor = new Coor();
+            coor.setX(firstIndividual.get(1).get(i));
+            coor.setY(secondIndividual.get(1).get(i));
+            individual2.getCity(i).setCoor(coor);
+        }
+
+        ArrayList<Individual> resultInvidual = new ArrayList<>();
+        resultInvidual.add(individual1);
+        resultInvidual.add(individual2);
+
+        return resultInvidual;
+    }
+    
+    public static ArrayList<ArrayList<Double>> orderBasedCrossover(ArrayList<Double> fatherList, ArrayList<Double> motherList) {
+        ArrayList<ArrayList<Double>> childrenList = new ArrayList<ArrayList<Double>>();
+
+        ArrayList<Double> child1 = generateChild(fatherList, motherList);
+        ArrayList<Double> child2 = generateChild(motherList, fatherList);
 
         childrenList.add(child1);
         childrenList.add(child2);
@@ -31,11 +72,11 @@ public class MutationNCrossover {
         return childrenList;
     }
 
-    public static ArrayList<Integer> generateChild(ArrayList<Integer> parent1, ArrayList<Integer> parent2) {
+    public static ArrayList<Double> generateChild(ArrayList<Double> parent1, ArrayList<Double> parent2) {
 
-        ArrayList<Integer> copyParent1 = parent1;
-        ArrayList<Integer> copyParent2 = parent2;
-        ArrayList<Integer> templist = new ArrayList<>();
+        ArrayList<Double> copyParent1 = parent1;
+        ArrayList<Double> copyParent2 = parent2;
+        ArrayList<Double> templist = new ArrayList<>();
         for (int i = 0; i < copyParent1.size(); i++) {
             int randomNumber = findRandomPosition(9);
             double possibility = randomNumber * (0.1);
@@ -47,7 +88,7 @@ public class MutationNCrossover {
         for (int i = 0; i < copyParent2.size(); i++) {
             for (int j = 0; j < templist.size(); j++) {
                 if (templist.get(j) == copyParent2.get(i)) {
-                    copyParent2.set(i, -1);
+                    copyParent2.set(i, -1.0);
                 }
             }
         }
@@ -64,11 +105,52 @@ public class MutationNCrossover {
     }
 
     //Position Based Crossover
-    public static ArrayList<ArrayList<Integer>> positionBasedCrossover(ArrayList<Integer> fatherList, ArrayList<Integer> motherList) {
-        ArrayList<ArrayList<Integer>> childrenList = new ArrayList<ArrayList<Integer>>();
+    public static ArrayList positionBasedLevel(Individual individual1, Individual individual2){
+        ArrayList<Double> xfatherList = new ArrayList<>();
+        ArrayList<Double> xmotherList = new ArrayList<>();
 
-        ArrayList<Integer> child1 = generatePositionChild(fatherList, motherList);
-        ArrayList<Integer> child2 = generatePositionChild(motherList, fatherList);
+        ArrayList<Double> yfatherList = new ArrayList<>();
+        ArrayList<Double> ymotherList = new ArrayList<>();
+
+        for (int i = 0; i < individual1.individualSize(); i++) {
+            xfatherList.add(individual1.getCity(i).getCoor().getX());
+            yfatherList.add(individual1.getCity(i).getCoor().getY());
+            xmotherList.add(individual2.getCity(i).getCoor().getX());
+            ymotherList.add(individual2.getCity(i).getCoor().getY());
+        }
+
+        ArrayList<ArrayList<Double>> firstIndividual;
+        ArrayList<ArrayList<Double>> secondIndividual;
+
+        firstIndividual = positionBasedCrossover(xfatherList,xmotherList);
+        secondIndividual = positionBasedCrossover(yfatherList,ymotherList);
+
+        for (int i = 0; i < individual1.individualSize(); i++) {
+            Coor coor = new Coor();
+            coor.setX(firstIndividual.get(0).get(i));
+            coor.setY(secondIndividual.get(0).get(i));
+            individual1.getCity(i).setCoor(coor);
+        }
+
+        for (int i = 0; i < individual2.individualSize(); i++) {
+            Coor coor = new Coor();
+            coor.setX(firstIndividual.get(1).get(i));
+            coor.setY(secondIndividual.get(1).get(i));
+            individual2.getCity(i).setCoor(coor);
+        }
+
+        ArrayList<Individual> resultInvidual = new ArrayList<>();
+        resultInvidual.add(individual1);
+        resultInvidual.add(individual2);
+
+        return resultInvidual;
+    }
+
+    public static ArrayList<ArrayList<Double>> positionBasedCrossover(ArrayList<Double> fatherList, ArrayList<Double> motherList) {
+        ArrayList<ArrayList<Double>> childrenList = new ArrayList<ArrayList<Double>>();
+
+        ArrayList<Double> child1 = generatePositionChild(fatherList, motherList);
+        ArrayList<Double> child2 = generatePositionChild(motherList, fatherList);
 
         childrenList.add(child1);
         childrenList.add(child2);
@@ -78,18 +160,18 @@ public class MutationNCrossover {
         return childrenList;
     }
 
-    public static ArrayList<Integer> generatePositionChild(ArrayList<Integer> parent1, ArrayList<Integer> parent2) {
-        ArrayList<Integer> resultList = new ArrayList<>();
-        ArrayList<Integer> copyParent1 = parent1;
-        ArrayList<Integer> copyParent2 = parent2;
-        ArrayList<Integer> templist = new ArrayList<>();
+    public static ArrayList<Double> generatePositionChild(ArrayList<Double> parent1, ArrayList<Double> parent2) {
+        ArrayList<Double> resultList = new ArrayList<>();
+        ArrayList<Double> copyParent1 = parent1;
+        ArrayList<Double> copyParent2 = parent2;
+        ArrayList<Double> templist = new ArrayList<>();
         for (int i = 0; i < copyParent1.size(); i++) {
             int randomNumber = findRandomPosition(9);
             double possibility = randomNumber * (0.1);
             if (possibility > 0.5) {
                 templist.add(copyParent1.get(i));
             } else {
-                copyParent1.set(i, -1);
+                copyParent1.set(i, -1.0);
             }
         }
 

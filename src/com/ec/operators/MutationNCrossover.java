@@ -125,29 +125,22 @@ public class MutationNCrossover {
             }
         }
 
-        ArrayList<Individual> childNodes = new ArrayList<>();
+        ArrayList<City> childNodes = new ArrayList<>();
         int index = 0;
         while(index < numberOfCities) {
             //Parent A
-            City city1 = new City();
             Coor coor1 = new Coor();
             coor1.setY(parentA.getCity(index).getCoor().getY());
             coor1.setX(parentA.getCity(index).getCoor().getX());
-            city1.setCoor(coor1);
+            City city1 = new City(parentA.getCityIndex(index),true, coor1.getX(), coor1.getY());
             //Parent B
-            City city2 = new City();
             Coor coor2 = new Coor();
             coor2.setY(parentB.getCity(index).getCoor().getY());
             coor2.setX(parentB.getCity(index).getCoor().getX());
-            city2.setCoor(coor2);
+            City city2 = new City(parentB.getCityIndex(index),true, coor2.getX(), coor2.getY());
 
-//            childNodes.add(index < crossoverPoint ? city1 : city2 );
-//            childNodes.add(index < crossoverPoint ? new City(
-//                    parentA.getCity(index).getCoor().getX(),
-//                    parentA.getCity(index).getCoor().getY())
-//                    : new A1src.Node(index,
-//                    parentB.getNodes().get(index).getX(),
-//                    parentB.getNodes().get(index).getY()));
+            childNodes.add(index < crossoverPoint ?  city1: city2 );
+
             index++;
         }
 

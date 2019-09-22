@@ -9,6 +9,9 @@ public class City  implements Comparable<City>{
     private double y;
     private static Random RNG = new Random(System.nanoTime());
 
+    public City(){
+    }
+
     /**
      * Gets city id
      * @return id

@@ -374,7 +374,7 @@ public class MutationNCrossover {
         double sumY = 0.00;
 
         ArrayList<Double> tempList = new ArrayList<>();
-        for (int i = randomPosition1; i <= arrayList.size(); i++) {
+        for (int i = randomPosition1; i < arrayList.size(); i++) {
             sumY = sumY + resultListY.get(i);
             sumX = sumX + resultListX.get(i);
         }

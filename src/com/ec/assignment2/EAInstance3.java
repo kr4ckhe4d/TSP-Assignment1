@@ -13,7 +13,7 @@ import java.util.List;
 /**
  *  This algorithm utilises
  *  Selection : Tournament Selection
- *  Crossover: BOP Crossover
+ *  Crossover: Parent Fitness Crossover
  *  Mutation: Quarter Circle Explosion Mutation
  */
 public class EAInstance3 {

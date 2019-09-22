@@ -317,26 +317,20 @@ public class MutationNCrossover {
             randomPosition2 = temp;
         }
 
+        double avg = 0.00;
+        double sum = 0.00;
+
         ArrayList<Double> tempList = new ArrayList<>();
         for (int i = randomPosition1; i <= randomPosition2; i++) {
-            tempList.add(resultList.get(i));
-            resultList.set(i, -1.0);
+            sum = sum + resultList.get(i);
         }
+        avg = sum / (randomPosition2 - randomPosition1);
 
-        for (int i = 0; i < resultList.size(); i++) {
-            if (resultList.get(i) == -1) {
-                resultList.remove(i);
-                i = i - 1;
-            }
+        int tempValue = 0;
+        for (int i = randomPosition1; i <= randomPosition2;i++){
+//            tempValue++;
+            resultList.set(i, avg + tempValue);
         }
-
-        int randomPosition3 = findRandomPosition(resultList.size());
-
-        for (int i = 0; i < tempList.size(); i++) {
-            resultList.add(i + randomPosition3, tempList.get(i));
-        }
-
-        System.out.println(resultList);
 
         return resultList;
     }

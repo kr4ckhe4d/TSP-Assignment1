@@ -1,25 +1,22 @@
-package com.ec;
+package com.ec.assignment2;
 
+import com.ec.Individual;
+import com.ec.Population;
+import com.ec.TSPProblem;
 import com.ec.beans.City;
-import com.ec.operators.CrossoverNew;
 import com.ec.operators.MutationNCrossover;
 import com.ec.selection.FitnessProportional;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ec.operators.Crossover.PMXCrossover;
-import static com.ec.operators.Mutation.swapMutation;
-import static com.ec.operators.TranslateIndividual.translateChild;
-import static com.ec.operators.TranslateIndividual.translateChildren;
-
 /**
  *  This algorithm utilises
- *  Selection : Fitness-Proportionate(Roulette Wheel)
- *  Crossover: PMX Crossover
- *  Mutation: Swap Mutation
+ *  Selection : Tournament Selection
+ *  Crossover: BOP Crossover
+ *  Mutation: Random Linear Projection Mutation
  */
-public class EA_1_Assi_2 {
+public class EAInstance2 {
 
     private static int POPULATION_SIZE = 10;
     private static int GENERATION_SIZE = 1000;
@@ -88,8 +85,9 @@ public class EA_1_Assi_2 {
         }
 
         for (int i = elitismIndex; i < newPopulation.populationSize(); i++) {
-//            newPopulation.saveIndividual(i,MutationNCrossover.displacementLevelInversion(newPopulation.getIndividual(i)));
+            //newPopulation.saveIndividual(i,MutationNCrossover.displacementLevelInversion(newPopulation.getIndividual(i)));
             newPopulation.saveIndividual(i,MutationNCrossover.invidualLevelInversion(newPopulation.getIndividual(i)));
+            //newPopulation.saveIndividual(i,MutationNCrossover.scrambleLevelInversion(newPopulation.getIndividual(i)));
 
         }
 
@@ -98,3 +96,4 @@ public class EA_1_Assi_2 {
 
 
 }
+

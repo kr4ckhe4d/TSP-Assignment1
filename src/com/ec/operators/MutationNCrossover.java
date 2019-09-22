@@ -18,10 +18,10 @@ public class MutationNCrossover {
      * There are two crossover operators
      */
     //Order Based Crossover
-    public static ArrayList orderBasedLevel(Individual individual1, Individual individual2){
+    public static ArrayList orderBasedLevel(Individual individual1, Individual individual2) {
         ArrayList<Double> xfatherList = new ArrayList<>();
         ArrayList<Double> xmotherList = new ArrayList<>();
-        
+
         ArrayList<Double> yfatherList = new ArrayList<>();
         ArrayList<Double> ymotherList = new ArrayList<>();
 
@@ -31,12 +31,12 @@ public class MutationNCrossover {
             xmotherList.add(individual2.getCity(i).getCoor().getX());
             ymotherList.add(individual2.getCity(i).getCoor().getY());
         }
-        
+
         ArrayList<ArrayList<Double>> firstIndividual;
         ArrayList<ArrayList<Double>> secondIndividual;
-        
-        firstIndividual = orderBasedCrossover(xfatherList,xmotherList);
-        secondIndividual = orderBasedCrossover(yfatherList,ymotherList);
+
+        firstIndividual = orderBasedCrossover(xfatherList, xmotherList);
+        secondIndividual = orderBasedCrossover(yfatherList, ymotherList);
 
         for (int i = 0; i < individual1.individualSize(); i++) {
             Coor coor = new Coor();
@@ -58,7 +58,7 @@ public class MutationNCrossover {
 
         return resultInvidual;
     }
-    
+
     public static ArrayList<ArrayList<Double>> orderBasedCrossover(ArrayList<Double> fatherList, ArrayList<Double> motherList) {
         ArrayList<ArrayList<Double>> childrenList = new ArrayList<ArrayList<Double>>();
 
@@ -105,7 +105,7 @@ public class MutationNCrossover {
     }
 
     //Position Based Crossover
-    public static ArrayList positionBasedLevel(Individual individual1, Individual individual2){
+    public static ArrayList positionBasedLevel(Individual individual1, Individual individual2) {
         ArrayList<Double> xfatherList = new ArrayList<>();
         ArrayList<Double> xmotherList = new ArrayList<>();
 
@@ -122,8 +122,8 @@ public class MutationNCrossover {
         ArrayList<ArrayList<Double>> firstIndividual;
         ArrayList<ArrayList<Double>> secondIndividual;
 
-        firstIndividual = positionBasedCrossover(xfatherList,xmotherList);
-        secondIndividual = positionBasedCrossover(yfatherList,ymotherList);
+        firstIndividual = positionBasedCrossover(xfatherList, xmotherList);
+        secondIndividual = positionBasedCrossover(yfatherList, ymotherList);
 
         for (int i = 0; i < individual1.individualSize(); i++) {
             Coor coor = new Coor();
@@ -177,7 +177,7 @@ public class MutationNCrossover {
 
         for (int i = 0; i < copyParent2.size(); i++) {
             for (int j = 0; j < templist.size(); j++) {
-                if(copyParent2.get(i) == templist.get(j)){
+                if (copyParent2.get(i) == templist.get(j)) {
                     copyParent2.remove(i);
                     i = i - 1;
                 }
@@ -187,7 +187,7 @@ public class MutationNCrossover {
         int index = 0;
 
         for (int i = 0; i < copyParent1.size(); i++) {
-            if(copyParent1.get(i) == -1){
+            if (copyParent1.get(i) == -1) {
                 copyParent1.set(i, copyParent2.get(index));
                 index = index + 1;
             }
@@ -202,7 +202,7 @@ public class MutationNCrossover {
      * There are three mutation operators
      */
     //Inversion mutation (IM)
-    public static Individual invidualLevelInversion(Individual individuals){
+    public static Individual invidualLevelInversion(Individual individuals) {
         ArrayList<Double> xArrayList = new ArrayList<>();
         ArrayList<Double> yArrayList = new ArrayList<>();
         for (int i = 0; i < individuals.individualSize(); i++) {
@@ -221,8 +221,8 @@ public class MutationNCrossover {
         }
 
         return individuals;
-    }    
-    
+    }
+
     public static ArrayList complexInversionMutation(ArrayList<Double> arrayList) {
         int randomPosition1 = findRandomPosition(arrayList.size());
         int randomPosition2 = findRandomPosition(arrayList.size());
@@ -244,28 +244,10 @@ public class MutationNCrossover {
             randomPosition2 = temp;
         }
 
-        ArrayList<Double> tempList = new ArrayList<>();
-        for (int i = randomPosition1; i <= randomPosition2; i++) {
-            tempList.add(resultList.get(i));
-            resultList.set(i, -1.0);
+        for (int i = randomPosition1; i < arrayList.size(); i++) {
+
         }
 
-        int gap = randomPosition2 - randomPosition1;
-        int index = tempList.size() - 1;
-
-        System.out.println(tempList);
-
-        for (int i = randomPosition2; i <= randomPosition2 + gap; i++) {
-            resultList.add(i, tempList.get(index));
-            index = index - 1;
-        }
-
-        for (int i = 0; i < resultList.size(); i++) {
-            if (resultList.get(i) == -1) {
-                resultList.remove(i);
-                i = i - 1;
-            }
-        }
 
         System.out.println(resultList);
 
@@ -273,7 +255,7 @@ public class MutationNCrossover {
     }
 
     //Displacement mutation (DM)
-    public static Individual displacementLevelInversion(Individual individuals){
+    public static Individual displacementLevelInversion(Individual individuals) {
         ArrayList<Double> xArrayList = new ArrayList<>();
         ArrayList<Double> yArrayList = new ArrayList<>();
         for (int i = 0; i < individuals.individualSize(); i++) {
@@ -281,8 +263,12 @@ public class MutationNCrossover {
             yArrayList.add(individuals.getCity(i).getCoor().getY());
         }
 
-        xArrayList = displacementMutation(xArrayList);
-        yArrayList = displacementMutation(yArrayList);
+        ArrayList<ArrayList<Double>> totalResult = new ArrayList<ArrayList<Double>>();
+
+        totalResult = displacementMutation(xArrayList, yArrayList);
+
+        xArrayList = totalResult.get(0);
+        yArrayList = totalResult.get(1);
 
         for (int i = 0; i < individuals.individualSize(); i++) {
             Coor coor = new Coor();
@@ -294,18 +280,21 @@ public class MutationNCrossover {
         return individuals;
     }
 
-    public static ArrayList displacementMutation(ArrayList<Double> arrayList) {
+    public static ArrayList<ArrayList<Double>> displacementMutation(ArrayList<Double> arrayList, ArrayList<Double> arrayList1) {
         int flag = 0;
         int randomPosition1 = findRandomPosition(arrayList.size());
-        int randomPosition2 = findRandomPosition(arrayList.size());
-        ArrayList<Double> resultList = new ArrayList<>();
-        resultList = arrayList;
+        int randomPosition2 = findRandomPosition(arrayList1.size());
+        ArrayList<Double> resultListX = new ArrayList<>();
+        ArrayList<Double> resultListY = new ArrayList<>();
+        ArrayList<ArrayList<Double>> totalResultList = new ArrayList<ArrayList<Double>>();
+        resultListX = arrayList;
+        resultListY = arrayList1;
 
         while (flag == 0) {
             if (randomPosition1 != randomPosition2) {
                 flag = 1;
             } else {
-                randomPosition2 = findRandomPosition(resultList.size());
+                randomPosition2 = findRandomPosition(resultListX.size());
             }
         }
 //        System.out.println(randomPosition1 + "  ******  " + randomPosition2);
@@ -317,26 +306,35 @@ public class MutationNCrossover {
             randomPosition2 = temp;
         }
 
-        double avg = 0.00;
-        double sum = 0.00;
+        double avgX = 0.00;
+        double sumX = 0.00;
+
+        double avgY = 0.00;
+        double sumY = 0.00;
 
         ArrayList<Double> tempList = new ArrayList<>();
-        for (int i = randomPosition1; i <= randomPosition2; i++) {
-            sum = sum + resultList.get(i);
+        for (int i = randomPosition1; i <= arrayList.size(); i++) {
+            avgY = sumY = resultListY.get(i);
+            sumX = sumX + resultListX.get(i);
         }
-        avg = sum / (randomPosition2 - randomPosition1);
+        avgX = sumX / (arrayList.size() - randomPosition1);
+        avgY = sumY / (arrayList.size() - randomPosition1);
 
         int tempValue = 0;
-        for (int i = randomPosition1; i <= randomPosition2;i++){
+        for (int i = randomPosition1; i <= randomPosition2; i++) {
 //            tempValue++;
-            resultList.set(i, avg + tempValue);
+            resultListX.set(i, avgX + tempValue);
+            resultListY.set(i, avgY + tempValue);
         }
 
-        return resultList;
+        totalResultList.add(resultListX);
+        totalResultList.add(resultListY);
+
+        return totalResultList;
     }
 
     //Scramble mutation
-    public static Individual scrambleLevelInversion(Individual individuals){
+    public static Individual scrambleLevelInversion(Individual individuals) {
         ArrayList<Double> xArrayList = new ArrayList<>();
         ArrayList<Double> yArrayList = new ArrayList<>();
         for (int i = 0; i < individuals.individualSize(); i++) {

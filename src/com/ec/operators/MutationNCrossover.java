@@ -4,6 +4,7 @@ import com.ec.Individual;
 import com.ec.beans.Coor;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MutationNCrossover {
 
@@ -248,9 +249,31 @@ public class MutationNCrossover {
             randomPosition2 = temp;
         }
 
-        for (int i = randomPosition1; i < arrayList.size(); i++) {
 
+        double avgX = 0.00;
+        double sumX = 0.00;
+
+        double avgY = 0.00;
+        double sumY = 0.00;
+
+        ArrayList<Double> tempList = new ArrayList<>();
+        for (int i = randomPosition1; i <= arrayList.size(); i++) {
+            sumY = sumY + resultListY.get(i);
+            sumX = sumX + resultListX.get(i);
         }
+        avgX = sumX / (arrayList.size() - randomPosition1);
+        avgY = sumY / (arrayList.size() - randomPosition1);
+
+        double randomTempValue = new Random().nextInt(6);
+        for (int i = randomPosition1; i <= randomPosition2; i++) {
+//            tempValue++;
+            resultListX.set(i, avgX + randomTempValue);
+            resultListY.set(i, avgY + randomTempValue);
+        }
+
+        totalResultList.add(resultListX);
+        totalResultList.add(resultListY);
+
 
 
         System.out.println(resultListX);
@@ -324,7 +347,7 @@ public class MutationNCrossover {
         avgX = sumX / (arrayList.size() - randomPosition1);
         avgY = sumY / (arrayList.size() - randomPosition1);
 
-        double randomTempValue = (Math.random() * 50) * 0.1;
+        double randomTempValue = randInt(0,6) * 1.0;
         for (int i = randomPosition1; i <= randomPosition2; i++) {
 //            tempValue++;
             resultListX.set(i, avgX + randomTempValue);
@@ -404,5 +427,13 @@ public class MutationNCrossover {
 
     }
 
+
+    public static int randInt(int min, int max) {
+        Random random = new Random();
+
+        int randomNum = random.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
 
 }

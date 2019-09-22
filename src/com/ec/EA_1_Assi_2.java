@@ -88,7 +88,9 @@ public class EA_1_Assi_2 {
         }
 
         for (int i = elitismIndex; i < newPopulation.populationSize(); i++) {
-            newPopulation.saveIndividual(i,MutationNCrossover.displacementLevelInversion(newPopulation.getIndividual(i)));
+//            newPopulation.saveIndividual(i,MutationNCrossover.displacementLevelInversion(newPopulation.getIndividual(i)));
+            newPopulation.saveIndividual(i,MutationNCrossover.invidualLevelInversion(newPopulation.getIndividual(i)));
+
         }
 
         return newPopulation;

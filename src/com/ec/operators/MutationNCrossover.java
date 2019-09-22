@@ -1,6 +1,7 @@
 package com.ec.operators;
 
 import com.ec.Individual;
+import com.ec.beans.City;
 import com.ec.beans.Coor;
 
 import java.util.ArrayList;
@@ -106,38 +107,52 @@ public class MutationNCrossover {
     }
 
 
-//    public Individual BOPCrossover(Individual parentA, Individual parentB) {
-//        double fitnessOfParentA = parentA.getFitness();
-//        double fitnessOfParentB = parentB.getFitness();
-//        int numberOfCities = parentA.individualSize();
-//
-//        int crossoverPoint = (int) Math.round(numberOfCities * 0.5);
-//        if (fitnessOfParentA + fitnessOfParentB == 0) {
-//            System.err.println("Parent A fitness + parent B fitness = 0. Splitting genes 50/50");
-//        }
-//        else {
-//            Random r = new Random();
-//            crossoverPoint = (int) Math.round((fitnessOfParentA / (fitnessOfParentA + fitnessOfParentB)) * numberOfCities);
-//            crossoverPoint = (int) (crossoverPoint + r.nextGaussian()) % parentA.individualSize();
-//            if(crossoverPoint < 0) {
-//                crossoverPoint = 0;
-//            }
-//        }
-//
-//        ArrayList<Individual> childNodes = new ArrayList<>();
-//        int index = 0;
-//        while(index < numberOfCities) {
-//            childNodes.add(index < crossoverPoint ? new Individual(
+    public Individual BOPCrossover(Individual parentA, Individual parentB) {
+        double fitnessOfParentA = parentA.getFitness();
+        double fitnessOfParentB = parentB.getFitness();
+        int numberOfCities = parentA.individualSize();
+
+        int crossoverPoint = (int) Math.round(numberOfCities * 0.5);
+        if (fitnessOfParentA + fitnessOfParentB == 0) {
+            System.err.println("Parent A fitness + parent B fitness = 0. Splitting genes 50/50");
+        }
+        else {
+            Random r = new Random();
+            crossoverPoint = (int) Math.round((fitnessOfParentA / (fitnessOfParentA + fitnessOfParentB)) * numberOfCities);
+            crossoverPoint = (int) (crossoverPoint + r.nextGaussian()) % parentA.individualSize();
+            if(crossoverPoint < 0) {
+                crossoverPoint = 0;
+            }
+        }
+
+        ArrayList<Individual> childNodes = new ArrayList<>();
+        int index = 0;
+        while(index < numberOfCities) {
+            //Parent A
+            City city1 = new City();
+            Coor coor1 = new Coor();
+            coor1.setY(parentA.getCity(index).getCoor().getY());
+            coor1.setX(parentA.getCity(index).getCoor().getX());
+            city1.setCoor(coor1);
+            //Parent B
+            City city2 = new City();
+            Coor coor2 = new Coor();
+            coor2.setY(parentB.getCity(index).getCoor().getY());
+            coor2.setX(parentB.getCity(index).getCoor().getX());
+            city2.setCoor(coor2);
+
+//            childNodes.add(index < crossoverPoint ? city1 : city2 );
+//            childNodes.add(index < crossoverPoint ? new City(
 //                    parentA.getCity(index).getCoor().getX(),
 //                    parentA.getCity(index).getCoor().getY())
 //                    : new A1src.Node(index,
 //                    parentB.getNodes().get(index).getX(),
 //                    parentB.getNodes().get(index).getY()));
-//            index++;
-//        }
-//
-//        return new Individual(childNodes);
-//    }
+            index++;
+        }
+
+        return new Individual(childNodes);
+    }
 
     //Position Based Crossover
     public static ArrayList positionBasedLevel(Individual individual1, Individual individual2) {
@@ -245,8 +260,12 @@ public class MutationNCrossover {
             yArrayList.add(individuals.getCity(i).getCoor().getY());
         }
 
-//        xArrayList = complexInversionMutation(xArrayList);
-//        yArrayList = complexInversionMutation(yArrayList);
+        ArrayList<ArrayList<Double>> totalResultList = new ArrayList<ArrayList<Double>>();
+
+        totalResultList = complexInversionMutation(xArrayList, yArrayList);
+
+        xArrayList = totalResultList.get(0);
+        yArrayList = totalResultList.get(1);
 
         for (int i = 0; i < individuals.individualSize(); i++) {
             Coor coor = new Coor();
@@ -290,24 +309,45 @@ public class MutationNCrossover {
         double avgY = 0.00;
         double sumY = 0.00;
 
+        int tempLength = 0;
+
         ArrayList<Double> tempList = new ArrayList<>();
-        for (int i = randomPosition1; i <= arrayList.size(); i++) {
+        for (int i = randomPosition1; i < arrayList.size(); i++) {
             sumY = sumY + resultListY.get(i);
             sumX = sumX + resultListX.get(i);
+            tempLength = i;
         }
-        avgX = sumX / (arrayList.size() - randomPosition1);
-        avgY = sumY / (arrayList.size() - randomPosition1);
+        avgX = sumX / tempLength;
+        avgY = sumY / tempLength;
 
-        double randomTempValue = new Random().nextInt(6);
-        for (int i = randomPosition1; i <= randomPosition2; i++) {
+        int k = 1;
+        double possibility = randInt(0,10);
+        double possibility2 = randInt(0,10);
+
+
+        for (int i = randomPosition1; i < randomPosition2; i++) {
+            double randomTempValueX = 0.00;
+            double randomTempValueY = 0.00;
+            if(possibility > 5) {
+                randomTempValueX = randInt(0, 10) + (randInt(0, 100) * 0.01);
+            }else{
+                randomTempValueX = randInt(0, 10) - (randInt(0, 100) * 0.01);
+            }
+
+            if(possibility2 < 5){
+                randomTempValueY =  randInt(0, 10) - (randInt(0,100) * 0.01);
+            }else{
+                randomTempValueY  = randInt(0, 10) + (randInt(0,100) * 0.01);
+            }
+
+
 //            tempValue++;
-            resultListX.set(i, avgX + randomTempValue);
-            resultListY.set(i, avgY + randomTempValue);
+            resultListX.set(i, avgX + randomTempValueX);
+            resultListY.set(i, avgY * k + randomTempValueY);
         }
 
         totalResultList.add(resultListX);
         totalResultList.add(resultListY);
-
 
 
         System.out.println(resultListX);
@@ -373,18 +413,37 @@ public class MutationNCrossover {
         double avgY = 0.00;
         double sumY = 0.00;
 
-        ArrayList<Double> tempList = new ArrayList<>();
-        for (int i = randomPosition1; i <= arrayList.size(); i++) {
+        int tempLength = 0;
+
+        for (int i = randomPosition1; i < arrayList.size(); i++) {
             sumY = sumY + resultListY.get(i);
             sumX = sumX + resultListX.get(i);
+            tempLength = i;
         }
-        avgX = sumX / (arrayList.size() - randomPosition1 + 1);
-        avgY = sumY / (arrayList.size() - randomPosition1 + 1);
+//        avgX = sumX / (arrayList.size() - randomPosition1);
+//        avgY = sumY / (arrayList.size() - randomPosition1);
 
-        double randomTempValueX = randInt(0,6) * 1.0;
-        double randomTempValueY = randInt(0,6) * 1.0;
-        for (int i = randomPosition1; i <= randomPosition2; i++) {
-//            tempValue++;
+        avgX = sumX / tempLength;
+        avgY = sumY / tempLength;
+
+        double possibility = randInt(0,10);
+        double possibility2 = randInt(0,10);
+
+        for (int i = randomPosition1; i < randomPosition2; i++) {
+            double randomTempValueX = 0.00;
+            double randomTempValueY = 0.00;
+            if(possibility > 5) {
+                randomTempValueX = randInt(0, 10) + (randInt(0, 100) * 0.01);
+            }else{
+                randomTempValueX = randInt(0, 10) - (randInt(0, 100) * 0.01);
+            }
+
+            if(possibility2 < 5){
+                randomTempValueY =  randInt(0, 10) - (randInt(0,100) * 0.01);
+            }else{
+                randomTempValueY  = randInt(0, 10) + (randInt(0,100) * 0.01);
+            }
+
             resultListX.set(i, avgX + randomTempValueX);
             resultListY.set(i, avgY + randomTempValueY);
         }

@@ -1,6 +1,7 @@
 package com.ec.operators;
 
 import com.ec.Individual;
+import com.ec.beans.City;
 import com.ec.beans.Coor;
 
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class MutationNCrossover {
         return copyParent2;
     }
 
-
+//
 //    public Individual BOPCrossover(Individual parentA, Individual parentB) {
 //        double fitnessOfParentA = parentA.getFitness();
 //        double fitnessOfParentB = parentB.getFitness();
@@ -127,7 +128,7 @@ public class MutationNCrossover {
 //        ArrayList<Individual> childNodes = new ArrayList<>();
 //        int index = 0;
 //        while(index < numberOfCities) {
-//            childNodes.add(index < crossoverPoint ? new Individual(
+//            childNodes.add(index < crossoverPoint ? new City(
 //                    parentA.getCity(index).getCoor().getX(),
 //                    parentA.getCity(index).getCoor().getY())
 //                    : new A1src.Node(index,
@@ -375,8 +376,8 @@ public class MutationNCrossover {
 
         ArrayList<Double> tempList = new ArrayList<>();
         for (int i = randomPosition1; i <= arrayList.size(); i++) {
-            sumY = sumY + resultListY.get(i);
-            sumX = sumX + resultListX.get(i);
+            sumY = (sumY + resultListY.get(i))/2;
+            sumX = (sumX + resultListX.get(i))/2;
         }
         avgX = sumX / (arrayList.size() - randomPosition1 + 1);
         avgY = sumY / (arrayList.size() - randomPosition1 + 1);

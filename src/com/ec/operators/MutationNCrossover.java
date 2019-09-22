@@ -324,7 +324,7 @@ public class MutationNCrossover {
         avgX = sumX / (arrayList.size() - randomPosition1);
         avgY = sumY / (arrayList.size() - randomPosition1);
 
-        double randomTempValue = (Math.random() * 10) * 0.1;
+        double randomTempValue = (Math.random() * 50) * 0.1;
         for (int i = randomPosition1; i <= randomPosition2; i++) {
 //            tempValue++;
             resultListX.set(i, avgX + randomTempValue);

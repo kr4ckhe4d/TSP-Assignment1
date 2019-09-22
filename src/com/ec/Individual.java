@@ -110,7 +110,7 @@ public class Individual {
     public String toString() {
         String geneString = "|";
         for (int i = 0; i < individualSize(); i++) {
-            geneString += getCity(i)+"|";
+            geneString += getCity(i)+"\n";
         }
         return geneString;
     }

@@ -74,6 +74,9 @@ public class City  implements Comparable<City>{
         return id + " "+ coor.getX() + " "+ coor.getY();
     }
 
+    public City() {
+    }
+
     // CONSTRUCTOR FOR FIXED POSITION
     public City(int number, boolean randomPosition, double x, double y) {     // if randomPosition is TRUE, [x,y] are the upper limits for a randomly chosen position. Otherwise, [x,y] is the assigned position.
         id = number;

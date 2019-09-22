@@ -14,7 +14,7 @@ import java.util.*;
  */
 public class LocalSearch {
     private static Random random = new Random(System.currentTimeMillis());
-    public static LinkedHashMap<String,LinkedHashMap<String,String>> dataLog = new LinkedHashMap<String,LinkedHashMap<String,String>>();
+    public static LinkedHashMap<String,LinkedHashMap<String,Object>> dataLog = new LinkedHashMap<String,LinkedHashMap<String,Object>>();
 
     /**
      * calculate the distance of 2 cities
@@ -170,18 +170,19 @@ public class LocalSearch {
                 return;
             }
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 1; j++) {
                 String operator = "jump";
-                if(j==0){
-                    operator="jump";
-                }else if(j==1){
-                    operator="exchange";
-                }else
+//                if(j==0){
+//                    operator="jump";
+//                }else if(j==1){
+//                    operator="exchange";
+//                }else
                     operator="2opt";
                 Opt2Totalcost=0.0;
                 Opt2Mincost=0.0;
                 sumTime=0L;
                 System.out.println(operator);
+                Solution bestResult=null;
                 if(bestSolution.getSize()<500) {
                     for (int i = 0; i < 30; i++) {
                         bestSolution.initialize();
@@ -193,18 +194,19 @@ public class LocalSearch {
                             if (i == 0)
                                 Opt2Mincost = result.getPathDist();
                             if (result.getPathDist() < Opt2Mincost) {
-    //                    bestSolution = result;
+                                bestResult = result;
                                 Opt2Mincost = result.getPathDist();
                             }
 
                     System.out.println("\t"+result.getPathDist()+"\t"+(eTime-sTime));
                     }
-                    LinkedHashMap<String,String> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
+                    LinkedHashMap<String,Object> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
                     if (subLog==null||subLog.size()<1)
-                        subLog = new LinkedHashMap<String,String>();
+                        subLog = new LinkedHashMap<String,Object>();
                     subLog.put(operator+":Mean Cost",Opt2Totalcost/30+"");
                     subLog.put(operator+":Mean Time",sumTime/30+"");
                     subLog.put(operator+":Min Cost",Opt2Mincost+"");
+                    subLog.put(operator+":bestResult",bestResult);
                     dataLog.put(fn.substring(fn.lastIndexOf("/")+1,fn.length()),subLog);
                 }else{
                     ThreadLocalSearch threadLS1 = new ThreadLocalSearch(bestSolution,operator,fn.substring(fn.lastIndexOf("/")+1,fn.length()));
@@ -231,9 +233,9 @@ public class LocalSearch {
                 }
 
 //                System.out.println("Main thread is finished");
-                LinkedHashMap<String,String> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
+                LinkedHashMap<String,Object> subLog= dataLog.get(fn.substring(fn.lastIndexOf("/")+1));
                 if (subLog==null||subLog.size()<1)
-                    subLog = new LinkedHashMap<String,String>();
+                    subLog = new LinkedHashMap<String,Object>();
                 subLog.put(operator+":Mean Cost",ThreadLocalSearch.totalCost/30+"");
                 subLog.put(operator+":Min Cost",ThreadLocalSearch.minCost+"");
                 LocalSearch.dataLog.put(fn.substring(fn.lastIndexOf("/")+1,fn.length()),subLog);
@@ -281,12 +283,24 @@ public class LocalSearch {
 
 
         }
-        for (Map.Entry<String, LinkedHashMap<String, String>> entry : dataLog.entrySet()) {
+        for (Map.Entry<String, LinkedHashMap<String, Object>> entry : dataLog.entrySet()) {
             String fname = entry.getKey();
             System.out.println(fname);
-            LinkedHashMap<String,String> dlog = entry.getValue();
+            LinkedHashMap<String,Object> dlog = entry.getValue();
             for (String key : dlog.keySet()) {
-                System.out.print(key+"\t"+dlog.get(key)+"\t");
+                Object obj = dlog.get(key);
+                if(obj instanceof String) {
+                    String tem = (String) obj;
+                    System.out.print(key + "\t" + obj.toString() + "\t");
+                }else{
+                    Solution slo = (Solution) obj;
+                    double cityX[] =slo.cityX;
+                    double cityY[] =slo.cityY;
+                    for (int i=0;i<cityX.length;i++){
+                        System.out.println(cityX[i]+","+cityY[i]);
+                    }
+                }
+
             }
             System.out.println();
         }

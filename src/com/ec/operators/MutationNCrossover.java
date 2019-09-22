@@ -515,6 +515,7 @@ public class MutationNCrossover {
     }
 
 
+
     public static int randInt(int min, int max) {
         Random random = new Random();
 

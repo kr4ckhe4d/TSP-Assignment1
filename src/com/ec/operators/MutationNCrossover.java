@@ -105,6 +105,40 @@ public class MutationNCrossover {
         return copyParent2;
     }
 
+
+//    public Individual BOPCrossover(Individual parentA, Individual parentB) {
+//        double fitnessOfParentA = parentA.getFitness();
+//        double fitnessOfParentB = parentB.getFitness();
+//        int numberOfCities = parentA.individualSize();
+//
+//        int crossoverPoint = (int) Math.round(numberOfCities * 0.5);
+//        if (fitnessOfParentA + fitnessOfParentB == 0) {
+//            System.err.println("Parent A fitness + parent B fitness = 0. Splitting genes 50/50");
+//        }
+//        else {
+//            Random r = new Random();
+//            crossoverPoint = (int) Math.round((fitnessOfParentA / (fitnessOfParentA + fitnessOfParentB)) * numberOfCities);
+//            crossoverPoint = (int) (crossoverPoint + r.nextGaussian()) % parentA.individualSize();
+//            if(crossoverPoint < 0) {
+//                crossoverPoint = 0;
+//            }
+//        }
+//
+//        ArrayList<Individual> childNodes = new ArrayList<>();
+//        int index = 0;
+//        while(index < numberOfCities) {
+//            childNodes.add(index < crossoverPoint ? new Individual(
+//                    parentA.getCity(index).getCoor().getX(),
+//                    parentA.getCity(index).getCoor().getY())
+//                    : new A1src.Node(index,
+//                    parentB.getNodes().get(index).getX(),
+//                    parentB.getNodes().get(index).getY()));
+//            index++;
+//        }
+//
+//        return new Individual(childNodes);
+//    }
+
     //Position Based Crossover
     public static ArrayList positionBasedLevel(Individual individual1, Individual individual2) {
         ArrayList<Double> xfatherList = new ArrayList<>();
@@ -344,14 +378,15 @@ public class MutationNCrossover {
             sumY = sumY + resultListY.get(i);
             sumX = sumX + resultListX.get(i);
         }
-        avgX = sumX / (arrayList.size() - randomPosition1);
-        avgY = sumY / (arrayList.size() - randomPosition1);
+        avgX = sumX / (arrayList.size() - randomPosition1 + 1);
+        avgY = sumY / (arrayList.size() - randomPosition1 + 1);
 
-        double randomTempValue = randInt(0,6) * 1.0;
+        double randomTempValueX = randInt(0,6) * 1.0;
+        double randomTempValueY = randInt(0,6) * 1.0;
         for (int i = randomPosition1; i <= randomPosition2; i++) {
 //            tempValue++;
-            resultListX.set(i, avgX + randomTempValue);
-            resultListY.set(i, avgY + randomTempValue);
+            resultListX.set(i, avgX + randomTempValueX);
+            resultListY.set(i, avgY + randomTempValueY);
         }
 
         totalResultList.add(resultListX);

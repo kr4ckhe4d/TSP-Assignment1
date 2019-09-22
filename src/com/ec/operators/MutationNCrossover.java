@@ -210,8 +210,8 @@ public class MutationNCrossover {
             yArrayList.add(individuals.getCity(i).getCoor().getY());
         }
 
-        xArrayList = complexInversionMutation(xArrayList);
-        yArrayList = complexInversionMutation(yArrayList);
+//        xArrayList = complexInversionMutation(xArrayList);
+//        yArrayList = complexInversionMutation(yArrayList);
 
         for (int i = 0; i < individuals.individualSize(); i++) {
             Coor coor = new Coor();
@@ -223,18 +223,22 @@ public class MutationNCrossover {
         return individuals;
     }
 
-    public static ArrayList complexInversionMutation(ArrayList<Double> arrayList) {
+    public static ArrayList<ArrayList<Double>> complexInversionMutation(ArrayList<Double> arrayList, ArrayList<Double> arrayList1) {
         int randomPosition1 = findRandomPosition(arrayList.size());
         int randomPosition2 = findRandomPosition(arrayList.size());
-        ArrayList<Double> resultList = new ArrayList<>();
-        resultList = arrayList;
+        ArrayList<ArrayList<Double>> totalResultList = new ArrayList<ArrayList<Double>>();
+        ArrayList<Double> resultListX = new ArrayList<>();
+        ArrayList<Double> resultListY = new ArrayList<>();
+        resultListX = arrayList;
+        resultListY = arrayList1;
+
         int flag = 0;
 
         while (flag == 0) {
             if (randomPosition1 != randomPosition2) {
                 flag = 1;
             } else {
-                randomPosition2 = findRandomPosition(resultList.size());
+                randomPosition2 = findRandomPosition(resultListX.size());
             }
         }
 
@@ -249,9 +253,9 @@ public class MutationNCrossover {
         }
 
 
-        System.out.println(resultList);
+        System.out.println(resultListX);
 
-        return resultList;
+        return totalResultList;
     }
 
     //Displacement mutation (DM)
@@ -314,17 +318,17 @@ public class MutationNCrossover {
 
         ArrayList<Double> tempList = new ArrayList<>();
         for (int i = randomPosition1; i <= arrayList.size(); i++) {
-            avgY = sumY = resultListY.get(i);
+            sumY = sumY + resultListY.get(i);
             sumX = sumX + resultListX.get(i);
         }
         avgX = sumX / (arrayList.size() - randomPosition1);
         avgY = sumY / (arrayList.size() - randomPosition1);
 
-        int tempValue = 0;
+        double randomTempValue = (Math.random() * 10) * 0.1;
         for (int i = randomPosition1; i <= randomPosition2; i++) {
 //            tempValue++;
-            resultListX.set(i, avgX + tempValue);
-            resultListY.set(i, avgY + tempValue);
+            resultListX.set(i, avgX + randomTempValue);
+            resultListY.set(i, avgY + randomTempValue);
         }
 
         totalResultList.add(resultListX);

@@ -1,7 +1,7 @@
 package com.ec.jMetal_Implementations;
 
 import com.ec.assignment3.jMetal_Runners.MOEA_Runner;
-import com.ec.assignment3.OutputLogger;
+import com.ec.assignment3.Logger;
 import com.ec.Objects.City;
 import com.ec.Objects.HamiltonCycle;
 import com.ec.Objects.Instance_Ex3Format;
@@ -19,7 +19,7 @@ public class TSP_InstanceProblem_Mixed extends TSP_InstanceProblem {
     TSP_Solver solver_J;
     TSP_Solver solver_K;
 
-    OutputLogger OL;
+    Logger OL;
     MOEA_Runner moea;
     static Random RNG;
 

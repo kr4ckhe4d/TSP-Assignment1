@@ -31,7 +31,7 @@ public class Ass3Main {
         AbstractAlgorithmRunner.printFinalSolutionSet(result);
         System.out.println(result);
 
-        OutputLogger OL = new OutputLogger(" \t");
+        Logger OL = new Logger(" \t");
         OL.setExperimentName("Ex3", numOfCities, RunnerType, Algorithm_i);
         OL.addPopulation(result);
         OL.readObjectivesFile("FUN.tsv");
@@ -63,15 +63,18 @@ public class Ass3Main {
         String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
 
         switch (args[0]) {
-            case "Ex1":
+            case "Ex2":
+                System.out.println("Running Exercise 2 - Discrete evolutionary multi-objective algorithms for TSP instances");
                 runSingular(newArgs, true);
                 break;
 
-            case "Ex2":
+            case "Ex3":
+                System.out.println("Running Exercise 3 - Continuous evolutionary multi-objective algorithms for TSP instances");
                 runSingular(newArgs, false);
                 break;
 
-            case "Ex3":
+            case "Ex4":
+                System.out.println("Running Exercise 4 - Mixed evolutionary multi-objective algorithms for TSP instances");
                 runMixed(newArgs);
                 break;
         }

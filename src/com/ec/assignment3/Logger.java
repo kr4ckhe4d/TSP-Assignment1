@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OutputLogger {
+public class Logger {
     private String outputPath = "OUTPUT.txt";
     private String experimentName;
     private String separator;
@@ -21,7 +21,7 @@ public class OutputLogger {
 
     List<TSP_InstanceSolution> population;
 
-    public OutputLogger(String separatorType) {
+    public Logger(String separatorType) {
         separator = separatorType;
         p_ij_ParetoFront = new ArrayList<>();
         p_ik_ParetoFront = new ArrayList<>();

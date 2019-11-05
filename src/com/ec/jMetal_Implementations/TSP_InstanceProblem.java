@@ -1,6 +1,6 @@
 package com.ec.jMetal_Implementations;
 
-import com.ec.assignment3.OutputLogger;
+import com.ec.assignment3.Logger;
 import com.ec.Objects.HamiltonCycle;
 import com.ec.TSP_Solvers.TSP_Solver;
 import com.ec.TSP_Solvers.TSP_SolverFactory;
@@ -15,7 +15,7 @@ public class TSP_InstanceProblem implements Problem<TSP_InstanceSolution> {
     TSP_Solver solver_J;
     TSP_Solver solver_K;
 
-    OutputLogger OL;
+    Logger OL;
 
     private int numberOfVariables;
     private int numberOfObjectives;

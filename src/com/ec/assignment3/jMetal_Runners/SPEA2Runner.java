@@ -1,6 +1,6 @@
 package com.ec.assignment3.jMetal_Runners;
 
-import com.ec.assignment3.OutputLogger;
+import com.ec.assignment3.Logger;
 import com.ec.jMetal_Implementations.*;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.spea2.SPEA2Builder;
@@ -36,7 +36,7 @@ public class SPEA2Runner extends AbstractAlgorithmRunner {
         MutationOperator<TSP_InstanceSolution> mutation;
         SelectionOperator<List<TSP_InstanceSolution>, TSP_InstanceSolution> selection;
         String ObjectivesFile = "FUN.tsv";
-        OutputLogger OL = new OutputLogger("\t");
+        Logger OL = new Logger("\t");
 
         // DEFINE PROBLEM
         problem = new TSP_InstanceProblem(numOfCities, Algorithm_i, fixedGrid);

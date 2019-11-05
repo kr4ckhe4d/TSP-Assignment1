@@ -9,14 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class exampleCrossover implements CrossoverOperator<TSP_InstanceSolution> {
+public class RandomSwapCrossover implements CrossoverOperator<TSP_InstanceSolution> {
     HamiltonCycle Parent1;
     HamiltonCycle Parent2;
 
     private double crossoverProbability;
     private Random RNG;
 
-    public exampleCrossover(double probability) {
+    public RandomSwapCrossover(double probability) {
         RNG = new Random(System.currentTimeMillis());
         setCrossoverProbability(probability);
     }

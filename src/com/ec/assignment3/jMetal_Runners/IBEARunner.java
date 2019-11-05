@@ -40,11 +40,11 @@ public class IBEARunner extends AbstractAlgorithmRunner {
 
         // DEFINE CROSSOVER CHARACTERISTICS
         double crossoverProbability = 0.9;
-        crossover = new exampleCrossover(crossoverProbability);
+        crossover = new RandomSwapCrossover(crossoverProbability);
 
         // DEFINE MUTATION CHARACTERISTICS
         double mutationProbability = 1.0 / problem.getNumberOfVariables();
-        mutation = new exampleMutator(mutationProbability, fixedGrid);
+        mutation = new RandomShiftMutator(mutationProbability, fixedGrid);
 
         // DEFINE SELECTION CHARACTERISTICS
         selection = new BinaryTournamentSelection<TSP_InstanceSolution>();

@@ -8,7 +8,7 @@ import org.uma.jmetal.util.JMetalException;
 
 import java.util.Random;
 
-public class exampleMutator implements MutationOperator<TSP_InstanceSolution> {
+public class RandomShiftMutator implements MutationOperator<TSP_InstanceSolution> {
     HamiltonCycle victimHC;
     HamiltonCycle resultHC;
 
@@ -16,7 +16,7 @@ public class exampleMutator implements MutationOperator<TSP_InstanceSolution> {
     private boolean fixedG;
     private Random RNG;
 
-    public exampleMutator(double probability, boolean fixedGrid) {
+    public RandomShiftMutator(double probability, boolean fixedGrid) {
         fixedG = fixedGrid;
         RNG = new Random(System.currentTimeMillis());
         setMutationProbability(probability);

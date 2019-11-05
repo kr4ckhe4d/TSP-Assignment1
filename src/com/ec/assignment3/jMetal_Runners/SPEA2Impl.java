@@ -14,7 +14,7 @@ import org.uma.jmetal.util.JMetalLogger;
 
 import java.util.List;
 
-public class SPEA2Runner extends AbstractAlgorithmRunner {
+public class SPEA2Impl extends AbstractAlgorithmRunner {
     public static String Algorithm_i;
     public static int numOfCities;
     public static boolean fixedGrid;

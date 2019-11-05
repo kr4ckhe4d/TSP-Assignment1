@@ -1,9 +1,9 @@
 package com.ec.assignment3;
 
-import com.ec.assignment3.jMetal_Runners.IBEARunner;
+import com.ec.assignment3.jMetal_Runners.IBEAImpl;
 import com.ec.assignment3.jMetal_Runners.MOEA_Runner;
-import com.ec.assignment3.jMetal_Runners.NSGAIIRunner;
-import com.ec.assignment3.jMetal_Runners.SPEA2Runner;
+import com.ec.assignment3.jMetal_Runners.NSGAIIImpl;
+import com.ec.assignment3.jMetal_Runners.SPEA2Impl;
 import com.ec.jMetal_Implementations.TSP_InstanceSolution;
 import org.uma.jmetal.runner.AbstractAlgorithmRunner;
 
@@ -46,15 +46,15 @@ public class Ass3Main {
 
         switch (newArgs[1]) {
             case "NSGAII":
-                NSGAIIRunner.main(newArgs);
+                NSGAIIImpl.main(newArgs);
                 break;
 
             case "SPEA2":
-                SPEA2Runner.main(newArgs);
+                SPEA2Impl.main(newArgs);
                 break;
 
             case "IBEA":
-                IBEARunner.main(newArgs);
+                IBEAImpl.main(newArgs);
                 break;
         }
     }

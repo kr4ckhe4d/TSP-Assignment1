@@ -13,7 +13,7 @@ import org.uma.jmetal.util.JMetalLogger;
 
 import java.util.List;
 
-public class IBEARunner extends AbstractAlgorithmRunner {
+public class IBEAImpl extends AbstractAlgorithmRunner {
     public static String Algorithm_i;
     public static int numOfCities;
     public static boolean fixedGrid;
